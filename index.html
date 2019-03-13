@@ -1,0 +1,84 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.0/socket.io.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script>
+    var socket = io.connect('http://localhost:3000/');
+    var socketNew = io.connect('http://localhost:3000/my-namespace');
+    socket.on('news', function(data) {
+        console.log('======================', data);
+        socket.emit('my other event', {
+            my: 'data'
+        });
+    });
+    socket.on('connectToRoom', function(data) {
+            console.log('=====connectToRoom====', data)
+        })
+        // $(document).on('click', 'input[type="button"]', function() {
+        //     let msg = $("input[name='msg']").val();
+        //     socket.emit('click', msg)
+        //     socketNew.emit('click2', msg)
+        // });
+
+
+    socketNew.on('click2', function(data) {
+        console.log('name space 2...', data);
+        socketNew.emit('hi', data)
+    })
+
+
+    $(document).on('click', '#username', function() {
+        socketNew.emit('setUsername', $("input[name='username']").val())
+    })
+    var user = '';
+    socketNew.on('setUser', function(data) {
+        console.log("========data====", data.username)
+        user = data.username;
+        $(".container1").append(data.username + ' added for chat')
+
+    })
+    socketNew.on('userExists', function(data) {
+        console.log('=== == =data =====', data);
+    })
+
+    function sendMessage() {
+        var msg = document.getElementById('msg').value;
+        console.log('--------msg---------', msg)
+        if (msg) {
+            socketNew.emit('msg', {
+                msg: msg,
+                user: user
+            });
+        } else {
+            console.log('else')
+        }
+    }
+    socketNew.on('newmsg', function(data) {
+        console.log('=====newmsg======', data)
+            // if (user) {
+        document.getElementById('message-container').innerHTML += '<div><b>' +
+            data.user + '</b>: ' + data.msg + '</div>'
+            //}
+    })
+</script>
+<!-- <input type="text" name="msg" value="">
+<input type="button" value="Send"> -->
+<style>
+    .blc {
+        width: 400px;
+        height: 500px;
+        border: 1px solid #ccc
+    }
+    
+    .container1 {
+        border-top: 1px solid #ccc
+    }
+</style>Name:
+<input type="text" name="username" value="">
+<input type="button" id="username" value="Start">
+<div class="blc">
+    <div>
+        <input type="text" name="msg" id="msg" value="">
+        <input type="button" value="Send" onclick="sendMessage()">
+    </div>
+    <div class="container1" id="message-container"></div>
+</div>
