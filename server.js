@@ -46,7 +46,7 @@ io.on('connection', function(socket) {
     // }
     // socket.join("room-" + roomNo);
     // io.sockets.in("room-" + roomNo).emit('connectToRoom', "You are in room no. " + roomNo);
-    // console.log(io.nsps['/'].adapter.rooms["room-" + roomNo].length);
+    // console.log(io.nsps['/'].adapter.rooms["room-" + roomNo].length);sdsdfsf
 
 });
 
