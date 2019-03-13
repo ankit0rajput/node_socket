@@ -56,6 +56,7 @@ nsp.on('connection', function(socket) {
     socket.on('click2', function(data) {
         console.log('====NSP====', data)
     });
+    // 
     var users = [];
     console.log(users.indexOf('s'));
     socket.on('setUsername', function(data) {
