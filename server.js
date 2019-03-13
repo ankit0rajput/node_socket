@@ -51,6 +51,7 @@ io.on('connection', function(socket) {
 });
 
 nsp.on('connection', function(socket) {
+
     console.log('someone connected NSP');
     socket.on('click2', function(data) {
         console.log('====NSP====', data)
